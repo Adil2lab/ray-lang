@@ -20,17 +20,17 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Incorrect usage. Please provide at least the file path." << std::endl;
 		std::cerr << "Correct usage is:" << std::endl;
 #ifdef WIN32
-		std::cerr << "  hel.exe <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  rayc.exe <file.qlm> [<args>]" << std::endl;
 		std::cerr << "Or run this:" << std::endl;
-		std::cerr << "  hel.exe --help" << std::endl;
+		std::cerr << "  rayc.exe --help" << std::endl;
 #endif // WIN32
 
 #ifdef __LINUX__
-		std::cerr << "  ./hel <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  ./rayc <file.qlm> [<args>]" << std::endl;
 		std::cerr << "  or " << std::endl;
-		std::cerr << "  hel <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  rayc <file.qlm> [<args>]" << std::endl;
 		std::cerr << "Or run this:" << std::endl;
-		std::cerr << "  ./hel --help" << std::endl;
+		std::cerr << "  rayc --help" << std::endl;
 #endif // __LINUX__
 		return EXIT_FAILURE;
 	}
