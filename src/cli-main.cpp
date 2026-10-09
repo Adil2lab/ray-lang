@@ -20,22 +20,22 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Incorrect usage. Please provide at least the file path." << std::endl;
 		std::cerr << "Correct usage is:" << std::endl;
 #ifdef WIN32
-		std::cerr << "  rayc.exe <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  rayc.exe <file.ray> [<args>]" << std::endl;
 		std::cerr << "Or run this:" << std::endl;
 		std::cerr << "  rayc.exe --help" << std::endl;
 #endif // WIN32
 
 #ifdef __LINUX__
-		std::cerr << "  ./rayc <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  ./rayc <file.ray> [<args>]" << std::endl;
 		std::cerr << "  or " << std::endl;
-		std::cerr << "  rayc <file.qlm> [<args>]" << std::endl;
+		std::cerr << "  rayc <file.ray> [<args>]" << std::endl;
 		std::cerr << "Or run this:" << std::endl;
 		std::cerr << "  rayc --help" << std::endl;
 #endif // __LINUX__
 		return EXIT_FAILURE;
 	}
-	else if (!(std::string(argv[1]).ends_with(".qlm") || std::string(argv[1]).ends_with(".QLM"))) {
-		std::cerr << "Error: given files are not supported. Please use .qlm files." << std::endl;
+	else if (!(std::string(argv[1]).ends_with(".ray") || std::string(argv[1]).ends_with(".rayl"))) {
+		std::cerr << "Error: given files are not supported. Please use .ray or .rayl files." << std::endl;
 		return EXIT_FAILURE;
 	}
 	else if (!(std::filesystem::exists(argv[1]))) {

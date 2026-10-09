@@ -1,4 +1,6 @@
-#pragma once
+#ifndef EXP_VISITOR_RAYL_HPP
+#define EXP_VISITOR_RAYL_HPP
+
 #include <iostream>
 #include <sstream>
 #include "utils.hpp"
@@ -13,3 +15,4 @@ struct Gen_ExpVisitor {
         out << "    mov rdi, " << exp.token.value.value() << "\n";
     }
 };
+#endif // EXP_VISITOR_RAYL_HPP

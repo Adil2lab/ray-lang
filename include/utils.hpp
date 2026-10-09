@@ -2,7 +2,8 @@
 // Created by adil on 9/6/25.
 //
 
-#pragma once
+#ifndef UTILS_RAYL_HPP
+#define UTILS_RAYL_HPP
 
 #include <cstddef>
 #include <optional>
@@ -104,3 +105,4 @@ struct NodeRetExp {
 struct NodeRet {
     NodeRetExp exp;
 };
+#endif // UTILS_RAYL_HPP
