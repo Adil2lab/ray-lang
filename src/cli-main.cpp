@@ -11,7 +11,7 @@
 #endif
 
 #include "tokenizer.hpp"
-#include "generator.hpp"
+#include "assgen.hpp"
 #include "parser.hpp"
 
 int main(int argc, char* argv[]) {
@@ -155,7 +155,7 @@ int main(int argc, char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	Generator generator(_out);
+	AssGen generator();
 
 	{
 		std::fstream file("out.asm", std::ios::out);
