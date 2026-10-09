@@ -51,6 +51,7 @@ add_library(rayc_core STATIC
     src/assgen.cpp
     src/parser.cpp
     src/lexer.cpp
+    src/symbol-table.cpp
 )
 
 target_include_directories(rayc_core PUBLIC
