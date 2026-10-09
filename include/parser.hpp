@@ -5,27 +5,28 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-#include <string>
-#include <vector>
-
 #include "utils.hpp"
 
 class Parser
 {
 public:
-    explicit Parser(std::vector<Token> tokens);
+    explicit Parser(std::vector<Token> _tokens);
+
+    NodeProgram parse_program();
 
     // Token parse_paren(const int& line) {
 
     // }
 
-    std::optional<NodeRetExp> parse_retExp();
+    std::optional<ExpNodeRet> parse_retExp();
 
     std::optional<NodeRet> parse_ret();
 
     std::optional<ExpVarDecl> parse_expVarDecl();
 
     std::vector<NodeVarDecl> parse_varDecl();
+
+    std::variant<NodeVarDecl, NodeRet> parse_stmt();
 
 private:
     [[nodiscard]] std::optional<Token> peak(int offset = 0) const;

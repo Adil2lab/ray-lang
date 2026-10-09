@@ -7,12 +7,13 @@
 #include <variant>
 #include <utility>
 #include <vector>
+#include <cstdlib>
 
-Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens))
+Parser::Parser(std::vector<Token> _tokens) : tokens(std::move(_tokens))
 {
 }
 
-std::optional<Token> Parser::peak(int offset = 0) const
+std::optional<Token> Parser::peak(int offset) const
 {
     if (m_index + offset >= tokens.size())
     {
@@ -24,30 +25,30 @@ std::optional<Token> Parser::peak(int offset = 0) const
     }
 }
 
-Token Parser::consume(bool eat = false)
+Token Parser::consume(bool eat)
 {
     Token &ref = tokens.at(m_index++);
     Token a = std::move(ref);
     if (eat)
     {
-        ref = Token{TokenKind::__deleted, std::nullopt, a.line, a.column};
+        ref = Token{TokenKind::_deleted, std::nullopt, a.line, a.column};
     }
     else
     {
-        ref = Token{TokenKind::__moved, std::nullopt, a.line, a.column};
+        ref = Token{TokenKind::_moved, std::nullopt, a.line, a.column};
     }
     return a;
 }
 
-std::optional<NodeRetExp> Parser::parse_retExp()
+std::optional<ExpNodeRet> Parser::parse_retExp()
 {
     if (peak().has_value() && peak().value().type == TokenKind::Int_lit)
     {
-        return NodeRetExp{.token = ExpRetNIdent{consume()}};
+        return ExpNodeRet{.token = ExpRetNIdent{consume()}};
     }
     else if (peak().has_value() && peak().value().type == TokenKind::Identifier)
     {
-        return NodeRetExp{.token = ExpRetIdent{consume()}};
+        return ExpNodeRet{.token = ExpRetIdent{consume()}};
     } // else if (peek().has_value() && peek().value().type == TokenType::openParen) {
     //     return NodeExp {.token = parse_paren()};
     // }
@@ -168,4 +169,39 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
         }
     }
     return res;
+}
+
+std::variant<NodeVarDecl, NodeRet> Parser::parse_stmt()
+{
+    auto tok = peak();
+    if (tok.has_value()){
+        if (tok->type == TokenKind::_return) {
+            auto retNode = parse_ret();
+            if (retNode.has_value()) {
+                return retNode.value();
+            } else {
+                std::cerr << "Failed to parse return statement at line " << tok->line << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        } else if (tok->type == TokenKind::DataType) {
+            auto varDeclNodes = parse_varDecl();
+            if (!varDeclNodes.empty()) {
+                return varDeclNodes.front(); // Assuming one variable declaration per statement
+            } else {
+                std::cerr << "Failed to parse variable declaration at line " << tok->line << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        } else {
+            std::cerr << "Unexpected token at line " << tok->line << ": " << static_cast<int>(tok->type) << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
+NodeProgram Parser::parse_program() {
+    NodeProgram program;
+    while (peak().has_value()) {
+        program.stmts.push_back(parse_stmt());
+    }
+    return program;
 }

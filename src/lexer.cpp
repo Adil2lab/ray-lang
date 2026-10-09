@@ -10,7 +10,7 @@ Tokenizer::Tokenizer(std::string &src) : m_src(std::move(src))
 {
 }
 
-std::optional<char> Tokenizer::peek(int offset = 0) const
+std::optional<char> Tokenizer::peek(int offset) const
 {
     if (m_index + offset >= m_src.size())
     {

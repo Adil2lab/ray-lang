@@ -6,9 +6,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
 #ifdef WIN32
 #include <windows.h> // for getting the file path
-#endif
+#endif // WIN32
 
 #include "tokenizer.hpp"
 #include "assgen.hpp"
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "  rayc.exe --help" << std::endl;
 #endif // WIN32
 
-#ifdef __LINUX__
+#ifdef __linux__
 		std::cerr << "  ./rayc <file.ray> [<args>]" << std::endl;
 		std::cerr << "  or " << std::endl;
 		std::cerr << "  rayc <file.ray> [<args>]" << std::endl;
@@ -134,7 +135,17 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (there_is_a_error) return EXIT_FAILURE;
-	if (platform == Platform::NotSure) return EXIT_FAILURE;
+	if (platform == Platform::NotSure) {
+#ifdef WIN32
+		platform = Platform::Windows64;
+#endif // WIN32
+#ifdef __linux__
+		platform = Platform::Linux64;
+#endif // __linux__
+#ifdef __APPLE__
+		platform = Platform::MacOS;
+#endif // __APPLE__
+	}
 	// -- Arguments parsing end --
 
 	{

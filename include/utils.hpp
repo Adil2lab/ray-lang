@@ -10,6 +10,86 @@
 #include <variant>
 #include <string>
 
+// -- Lexer Parts --
+
+enum class TokenKind {
+    DataType,
+    Identifier,
+    Int_lit,
+    String_lit,
+    Symbol,
+    SemCln,
+    _class,
+    _function,
+    _return,
+    OpenParen,
+    CloseParen,
+    EndofFile,
+    _deleted,
+    _moved
+};
+
+struct Token {
+    TokenKind type;
+    std::optional<std::string> value;
+    size_t line;
+    size_t column;
+};
+
+// -- End --
+
+// -- Parser Parts --
+
+// Expressions
+
+// Represents a variable declaration expression in the AST.
+struct ExpVarDecl {
+    Token token;
+};
+
+/**
+ * Represents an expression for return statement that doesn't have identifier.
+ */
+struct ExpRetNIdent {
+    Token token;
+};
+
+/**
+ * Represents an expression for return statement that is defined by a identifier.
+ */
+struct ExpRetIdent {
+    Token token;
+};
+
+// Represents a return expression node in the AST.
+struct ExpNodeRet {
+    std::variant<ExpRetNIdent, ExpRetIdent> token;
+};
+
+// Nodes
+
+/**
+ * Represents a variable declaration node in the AST.
+ */
+struct NodeVarDecl {
+    DataType dataType;
+    std::string identifier;
+    std::optional<ExpVarDecl> exp;
+};
+
+/**
+ * Represents a return node in the AST.
+ */
+struct NodeRet {
+    ExpNodeRet exp;
+};
+
+struct NodeProgram {
+    std::vector<std::variant<NodeVarDecl, NodeRet>> stmts;
+};
+
+// -- End --
+
 enum class DataType {
     Int,
     Float,
@@ -22,22 +102,6 @@ enum class Platform {
     Linux64,
     MacOS,
     NotSure
-};
-
-enum class TokenKind {
-    DataType,
-    Identifier,
-    Int_lit,
-    String_lit,
-    Symbol,
-    SemCln,
-    _class,
-    _functionNode,
-    _return,
-    openParen,
-    closeParen,
-    __deleted,
-    __moved
 };
 
 enum class SymbolType {
@@ -61,48 +125,4 @@ struct Symbol {
     bool isMutable;
 };
 
-struct Token {
-    TokenKind type;
-    std::optional<std::string> value;
-    size_t line;
-    size_t column;
-};
-
-struct ExpVarDecl {
-    Token token;
-};
-
-/**
- * Represents a variable declaration node in the AST.
- */
-struct NodeVarDecl {
-    DataType dataType;
-    std::string identifier;
-    std::optional<ExpVarDecl> exp;
-};
-
-/**
- * Represents an expression for return statement that doesn't have identifier.
- */
-struct ExpRetNIdent {
-    Token token;
-};
-
-/**
- * Represents an expression for return statement that is defined by a identifier.
- */
-struct ExpRetIdent {
-    Token token;
-};
-
-struct NodeRetExp {
-    std::variant<ExpRetNIdent, ExpRetIdent> token;
-};
-
-/**
- * Represents a return node in the AST.
- */
-struct NodeRet {
-    NodeRetExp exp;
-};
 #endif // UTILS_RAYL_HPP
