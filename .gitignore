@@ -5,6 +5,8 @@ out/
 .vs/
 .idea/
 .vscode/
+.cache/
+
 # Ignore specific compiled binaries and objects
 *.exe
 *.o
