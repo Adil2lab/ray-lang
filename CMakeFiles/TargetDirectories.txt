@@ -1,3 +1,0 @@
-/home/adil/Desktop/Hydrogen/CMakeFiles/hel.dir
-/home/adil/Desktop/Hydrogen/CMakeFiles/edit_cache.dir
-/home/adil/Desktop/Hydrogen/CMakeFiles/rebuild_cache.dir

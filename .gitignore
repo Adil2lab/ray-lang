@@ -16,3 +16,5 @@ out/
 *.dylib
 
 # Some exceptions
+
+tree.*

@@ -1,9 +1,13 @@
 {
 	"folders": [
 		{
-			"name": "Ray",
+			"name": "Ray Language",
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"C_Cpp.default.compileCommands": [
+			"build/compile_commands.json"
+		]
+	}
 }

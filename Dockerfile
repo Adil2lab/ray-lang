@@ -20,6 +20,6 @@ ENV CXX=clang++
 ENV PATH="/usr/lib/ccache:$PATH"
 ENV CCACHE_DIR=/root/.ccache
 
-WORKDIR /hlm
+WORKDIR /ray-lang
 
 CMD ["/bin/bash"]

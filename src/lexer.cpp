@@ -91,7 +91,7 @@ std::vector<Token> Tokenizer::tokenize()
                     dt = DataType::Char;
                     break;
                 default:
-                    std::cerr << "Unknown data type: " << buff << std::endl;
+                    std::cerr << "Unknown data type: " << buff << " at " << line << ":" << col << std::endl;
                     exit(EXIT_FAILURE);
                 }
                 tokens.push_back({TokenKind::DataType, dt, line, col});
