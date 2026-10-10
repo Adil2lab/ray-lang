@@ -62,7 +62,7 @@ void AssGen::gen_lin_VarDeclStmt(NodeVarDecl &node, std::stringstream &out)
         byteSize = "byte";
     }
     out << "    sub rsp," << quantity << "\n";
-    out << "    mov " << byteSize << "[rsp]," << node.exp.value().token.value.value() << "\n";
+    out << "    mov " << byteSize << "[rsp]," << std::get<std::string>(node.exp.value().token.value.value()) << "\n";
 
     return;
 }

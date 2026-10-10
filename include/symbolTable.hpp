@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_HPP
 
 #include "utils.hpp"
+#include <unordered_map>
 
 class SymbolTable
 {

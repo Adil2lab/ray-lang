@@ -9,6 +9,14 @@
 #include <optional>
 #include <variant>
 #include <string>
+#include <vector>
+
+enum class DataType {
+    Int,
+    Float,
+    String,
+    Char
+};
 
 // -- Lexer Parts --
 
@@ -93,13 +101,6 @@ struct NodeProgram {
 };
 
 // -- End --
-
-enum class DataType {
-    Int,
-    Float,
-    String,
-    Char
-};
 
 enum class Platform {
     Windows64,
