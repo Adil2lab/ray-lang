@@ -153,37 +153,49 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
 Stmt Parser::parse_stmt()
 {
     auto tok = peak();
-    if (tok.has_value()){
-        if (tok->type == TokenKind::_return) {
-            auto retNode = parse_ret();
-            if (retNode.has_value()) {
+    if (tok.has_value())
+    {
+        switch (tok->type)
+        {
+        case TokenKind::_return:
+            if (auto retNode = parse_ret())
+            {
                 return Stmt{retNode.value()};
-            } else {
+            }
+            else
+            {
                 std::cerr << "Failed to parse return statement at line " << tok->line << std::endl;
                 exit(EXIT_FAILURE);
             }
-        } else if (tok->type == TokenKind::DataType) {
-            auto varDeclNodes = parse_varDecl();
-            if (!varDeclNodes.empty()) {
+            break;
+        case TokenKind::DataType:
+            if (auto varDeclNodes = parse_varDecl(); !varDeclNodes.empty())
+            {
                 return Stmt{varDeclNodes.front()}; // Assuming one variable declaration per statement
-            } else {
+            }
+            else
+            {
                 std::cerr << "Failed to parse variable declaration at line " << tok->line << std::endl;
                 exit(EXIT_FAILURE);
             }
-        } else {
-            std::cerr << "Unexpected token at line " << tok->line << ": " << static_cast<int>(tok->type) << std::endl;
+            break;
+        default:
+            std::cerr << "Unexpected token at line " << tok->line << ":" << tok->column << " --> " << static_cast<int>(tok->type) << std::endl;
             exit(EXIT_FAILURE);
         }
     }
-    else {
+    else
+    {
         std::cerr << "Unexpected end of input while parsing statement." << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
-NodeProgram Parser::parse_program() {
+NodeProgram Parser::parse_program()
+{
     NodeProgram program;
-    while (peak().has_value()) {
+    while (peak().has_value())
+    {
         program.stmts.push_back(parse_stmt());
     }
     return program;
