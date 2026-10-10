@@ -1,4 +1,5 @@
 #include "assgen.hpp"
+#include "utils.hpp"
 
 #include <sstream>
 #include <string>
@@ -68,6 +69,6 @@ void AssGen::gen_lin_VarDeclStmt(NodeVarDecl &node, std::stringstream &out)
 
 // -- Linux 64 -- end --
 
-int AssGen::gen_Progam(std::stringstream &assemblyCode)
+int AssGen::gen_Progam(std::stringstream &assemblyCode, std::vector<Stmt> &stmtTree)
 {
 }

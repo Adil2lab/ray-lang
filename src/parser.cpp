@@ -9,9 +9,7 @@
 #include <vector>
 #include <cstdlib>
 
-Parser::Parser(std::vector<Token> _tokens) : tokens(std::move(_tokens))
-{
-}
+#include "utils.hpp"
 
 std::optional<Token> Parser::peak(int offset) const
 {
@@ -75,6 +73,7 @@ std::optional<NodeRet> Parser::parse_ret()
             if (peak().has_value() && peak().value().type == TokenKind::SemCln)
             {
                 consume();
+                break;
             }
             else
             {
@@ -104,27 +103,7 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
         if (peak().value().type == TokenKind::DataType)
         {
             Token identifierToken;
-            std::string dataType = consume().value.value();
-            DataType dataTypeValue;
-
-            switch (dataType[0])
-            {
-            case 'i':
-                dataTypeValue = DataType::Int;
-                break;
-            case 'f':
-                dataTypeValue = DataType::Float;
-                break;
-            case 'S':
-                dataTypeValue = DataType::String;
-                break;
-            case 'c':
-                dataTypeValue = DataType::Char;
-                break;
-            default:
-                std::cerr << "Unknown data type at line " << peak().value().line << " at column " << peak().value().column << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            DataType dataTypeValue = std::get<DataType>(consume().value.value());
 
             if (peak().has_value() && peak().value().type == TokenKind::Identifier)
             {
@@ -135,7 +114,7 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
                 std::cerr << "Expected identifier at line " << peak().value().line << " at column " << peak().value().column << std::endl;
                 exit(EXIT_FAILURE);
             }
-            if (peak().has_value() && peak().value().type == TokenKind::Symbol && peak().value().value == "=")
+            if (peak().has_value() && peak().value().type == TokenKind::Symbol && std::get<std::string>(peak().value().value.value()) == "=")
             {
                 consume();
             }
@@ -148,7 +127,7 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
             {
                 res.push_back(NodeVarDecl{
                     .dataType = dataTypeValue,
-                    .identifier = identifierToken.value.value(),
+                    .identifier = std::get<std::string>(identifierToken.value.value()),
                     .exp = expVarDecl});
             }
             else
@@ -171,14 +150,14 @@ std::vector<NodeVarDecl> Parser::parse_varDecl()
     return res;
 }
 
-std::variant<NodeVarDecl, NodeRet> Parser::parse_stmt()
+Stmt Parser::parse_stmt()
 {
     auto tok = peak();
     if (tok.has_value()){
         if (tok->type == TokenKind::_return) {
             auto retNode = parse_ret();
             if (retNode.has_value()) {
-                return retNode.value();
+                return Stmt{retNode.value()};
             } else {
                 std::cerr << "Failed to parse return statement at line " << tok->line << std::endl;
                 exit(EXIT_FAILURE);
@@ -186,7 +165,7 @@ std::variant<NodeVarDecl, NodeRet> Parser::parse_stmt()
         } else if (tok->type == TokenKind::DataType) {
             auto varDeclNodes = parse_varDecl();
             if (!varDeclNodes.empty()) {
-                return varDeclNodes.front(); // Assuming one variable declaration per statement
+                return Stmt{varDeclNodes.front()}; // Assuming one variable declaration per statement
             } else {
                 std::cerr << "Failed to parse variable declaration at line " << tok->line << std::endl;
                 exit(EXIT_FAILURE);

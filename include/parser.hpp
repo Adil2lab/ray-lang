@@ -10,7 +10,7 @@
 class Parser
 {
 public:
-    explicit Parser(std::vector<Token> _tokens);
+    explicit Parser(std::vector<Token> _tokens) : tokens(std::move(_tokens)) {}
 
     NodeProgram parse_program();
 
@@ -26,7 +26,7 @@ public:
 
     std::vector<NodeVarDecl> parse_varDecl();
 
-    std::variant<NodeVarDecl, NodeRet> parse_stmt();
+    Stmt parse_stmt();
 
 private:
     [[nodiscard]] std::optional<Token> peak(int offset = 0) const;

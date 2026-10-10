@@ -211,12 +211,16 @@ int main(int argc, char* argv[]) {
 
 		filen.erase(filen.find_last_of('/') + 1, filen.length() - (filen.find_last_of('/') + 1));
 
-		filen += "out";
-		system(("mv out " + filen).c_str());
+		filen += "out.exe";
+		std::filesystem::rename("out.exe", filen);
+		
 	}
 
 	if (!should_run_in_debug) {
-		system("rm -f out.asm out.o");
+		std::filesystem::remove("out.asm");
+		std::filesystem::remove("out.o");
+		std::filesystem::remove("out.obj");
+
 	}
 
 
@@ -234,11 +238,12 @@ int main(int argc, char* argv[]) {
 		filen.erase(filen.find_last_of('/') + 1, filen.length() - (filen.find_last_of('/') + 1));
 
 		filen += "out";
-		system(("mv out " + filen).c_str());
+		std::filesystem::rename("out", filen);
 	}
 
 	if (!should_run_in_debug) {
-		system("rm -f out.asm out.o");
+		std::filesystem::remove("out.asm");
+		std::filesystem::remove("out.o");
 	}
 
 	return EXIT_SUCCESS;

@@ -31,7 +31,7 @@ enum class TokenKind {
 
 struct Token {
     TokenKind type;
-    std::optional<std::string> value;
+    std::optional<std::variant<std::string, DataType>> value;
     size_t line;
     size_t column;
 };
@@ -84,8 +84,12 @@ struct NodeRet {
     ExpNodeRet exp;
 };
 
+struct Stmt {
+    std::variant<NodeVarDecl, NodeRet> stmt;
+};
+
 struct NodeProgram {
-    std::vector<std::variant<NodeVarDecl, NodeRet>> stmts;
+    std::vector<Stmt> stmts;
 };
 
 // -- End --

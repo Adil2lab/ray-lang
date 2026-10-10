@@ -6,7 +6,7 @@
 #define ASS_GEN_RAYL_HPP
 
 #include "utils.hpp"
-#include "expVisitor.hpp"
+#include "visitors.hpp"
 
 class AssGen
 {
@@ -29,7 +29,7 @@ public:
     [[nodiscard]] void gen_lin_VarDeclStmt(NodeVarDecl &node, std::stringstream &out);
     // -- Linux 64 -- end --
 
-    int gen_Progam(std::stringstream &assemblyCode);
+    int gen_Progam(std::stringstream &assemblyCode, std::vector<Stmt> &stmtTree);
 
 private:
 };
