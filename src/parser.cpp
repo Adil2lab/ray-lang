@@ -175,6 +175,10 @@ Stmt Parser::parse_stmt()
             exit(EXIT_FAILURE);
         }
     }
+    else {
+        std::cerr << "Unexpected end of input while parsing statement." << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 NodeProgram Parser::parse_program() {
